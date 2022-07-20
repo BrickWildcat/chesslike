@@ -9,8 +9,8 @@ screen=turtle.Screen()
 screen.title("Chesslike")
 screen.bgcolor("grey")
 screen.bgpic("checkerboard.gif")
-screen.addshape("pawn.gif")
-screen.addshape("tempawn.gif")
+screen.addshape("WhitePawn.gif")
+screen.addshape("BlackPawn.gif")
 
 
 screen.setup(width=400, height=400)
@@ -18,7 +18,7 @@ screen.tracer(0)
 
 print("Spawning player")
 player=turtle.Turtle()
-player.shape("pawn.gif")
+player.shape("WhitePawn.gif")
 # player.color("green")
 player.penup()
 player.goto(120, -120)
@@ -29,7 +29,7 @@ enemy = []
 def enemySpawn():
     global player, enemy
     newguy =turtle.Turtle()
-    newguy.shape("tempawn.gif")
+    newguy.shape("BlackPawn.gif")
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
