@@ -3,7 +3,7 @@ import random as r
 import time
 hints = 0
 movetrtls = []
-spawn = 1
+spawn = 0
 kills = 0
 screen=turtle.Screen()
 screen.title("Chesslike")
@@ -54,7 +54,7 @@ def enemyKill():
 print("Spawning enemy 1")
 enemySpawn()
 print("Spawned enemy 1")
-print("Spawning enemy 2")
+
 
 pawn = [[-80,0],[-80,80],[0,80],[80,80],[80,0],[80,-80],[0,-80],[-80,-80]]
 knight = [[-80,160],[80,160],[160,80],[160,-80],[80,-160],[-80,-160],[-160,80],[-160,-80]]
@@ -95,6 +95,9 @@ def pieceArr(piece):
 
 
 def enemyMove(emy,piece="pawn"):
+    global screen, player
+    kill = 0
+    badmoves = []
     validmove = 0
     piecearr = pieceArr(piece)
     while not validmove:
@@ -104,7 +107,12 @@ def enemyMove(emy,piece="pawn"):
             x = emy.xcor() + xy[0]
             y = emy.ycor() + xy[1]
             weights.append((340-player.distance(x,y))*10)
+            print("Generating move")
         seed = r.choices(piecearr,weights)
+        for b in badmoves:
+            while seed[0] == b:
+                print("Regen bad move")
+                seed = r.choices(piecearr,weights)
         x = emy.xcor() + seed[0][0]
         y = emy.ycor() + seed[0][1]
         print("Generated move")
@@ -118,6 +126,7 @@ def enemyMove(emy,piece="pawn"):
         for xy in piecearr: 
             if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1]:
                 print("Kill move found")
+                kill = 1
                 x = emy.xcor() + xy[0]
                 y = emy.ycor() + xy[1]
         if not(x > 280 or y > 280 or x < -280 or y < -280 or conflict):
@@ -125,14 +134,16 @@ def enemyMove(emy,piece="pawn"):
             validmove = 1
         else:
             print("Invalid move, checking for bad moves")
-            conflicts = 0
             for move in piecearr:
+                conf = 0
                 x = emy.xcor() + move[0]
                 y = emy.ycor() + move[1]
                 for e in enemy:
                     if e.xcor() == x and e.ycor() == y or x > 280 or y > 280 or x < -280 or y < -280:
-                        print("Removing bad move")
-                        piecearr.remove(move)
+                        conf = 1
+                if conf:
+                    print("Removing bad move")
+                    badmoves.append(move)
             if len(piecearr) == 0:
                 print("No good moves, staying in place")
                 x = emy.xcor()
@@ -141,12 +152,17 @@ def enemyMove(emy,piece="pawn"):
     time.sleep(0.5)
     emy.goto(x, y)
     screen.update()
+    if kill:
+        player.ht()
+        screen.update()
+        time.sleep(1)
+        resetGame()
 
 
 
 
 def click(x, y):
-    global player, hints, spawn, playerpiece, kills
+    global player, hints, spawn, playerpiece, kills, screen
     if player.distance(x,y) < 40:
         if not hints:
             hints = 1
@@ -196,6 +212,20 @@ def click(x, y):
                         screen.update()
                 else:
                     spawn += 1
+
+
+def resetGame():
+    global player, enemy, screen, kills, spawn
+    player.goto(120,-120)
+    for e in enemy:
+        e.ht()
+        enemy.remove(e)
+    kills = 0
+    spawn = 0
+    playerpiece = "pawn"
+    player.st()
+    enemySpawn()
+    screen.update()
 
 
 
