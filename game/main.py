@@ -14,6 +14,7 @@ screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/BlackPawn.gif")
 screen.addshape("game/BlackKnight.gif")
 screen.addshape("game/BlackBishop.gif")
+screen.addshape("game/BlackRook.gif")
 screen.addshape("game/Marker.gif")
 
 
@@ -26,7 +27,7 @@ player.shape("game/WhitePawn.gif")
 # player.color("green")
 player.penup()
 player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
-playerpiece = "queen"
+playerpiece = "pawn"
 print("Spawned player")
 enemy = []
 
@@ -34,16 +35,19 @@ enemy = []
 def enemySpawn():
     global player, enemy
     newguy =turtle.Turtle()
-    seed = r.randint(0,9)
-    if seed < 5:
+    seed = r.randint(0,14)
+    if seed < 7:
         newguy.piece = "pawn"
         newguy.shape("game/BlackPawn.gif")
-    elif seed < 8:
+    elif seed < 10:
         newguy.piece = "knight"
         newguy.shape("game/BlackKnight.gif")
-    else:
+    elif seed < 13:
         newguy.piece = "bishop"
         newguy.shape("game/BlackBishop.gif")
+    else:
+        newguy.piece = "rook"
+        newguy.shape("game/BlackRook.gif")
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
@@ -161,6 +165,7 @@ def enemyMove(emy,piece="pawn"):
         player.ht()
         screen.update()
         time.sleep(1)
+        screen.update()
         resetGame()
         return True
 
@@ -203,29 +208,35 @@ def click(x, y):
                 screen.update()
                 print("Moved player")
                 o=0
+                ded = 0
                 for en in enemy:
                     o+=1
                     print("Moving enemy",o)
                     if enemyMove(en,en.piece):
+                        ded = 1
                         break
                     print("Moved enemy", o)
-                if spawn == 5 or len(enemy) == 0:
+                if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
                     for i in range(round(kills/3)+1-len(enemy)):
                         time.sleep(0.25)
                         print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
-                else:
+                elif not ded:
                     spawn += 1
 
 
 def resetGame():
     global player, enemy, screen, kills, spawn
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
+    print("there are",len(enemy), "enemies")
+    i = 1
     for e in enemy:
+        print("removing enemy",i,"(",e.piece,")")
         e.ht()
         enemy.remove(e)
+        print("enemy",i,"(",e.piece,") removed")
     kills = 0
     spawn = 0
     playerpiece = "pawn"
