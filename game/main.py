@@ -4,7 +4,7 @@ import time
 hints = 0
 movetrtls = []
 spawn = 1
-
+kills = 0
 screen=turtle.Screen()
 screen.title("Chesslike")
 screen.bgcolor("grey")
@@ -13,7 +13,7 @@ screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/BlackPawn.gif")
 
 
-screen.setup(width=400, height=400)
+screen.setup(width=700, height=700)
 screen.tracer(0)
 
 print("Spawning player")
@@ -44,11 +44,12 @@ def enemySpawn():
     enemy.append(newguy)
 
 def enemyKill():
-    global player
+    global player, kills
     for e in enemy:
         if e.distance(player) == 0:
             e.ht()
             enemy.remove(e)
+            kills += 1
 
 print("Spawning enemy 1")
 enemySpawn()
@@ -109,7 +110,7 @@ def enemyMove(emy,piece="pawn"):
 
 
 def click(x, y):
-    global player, hints, spawn, playerpiece
+    global player, hints, spawn, playerpiece, kills
     if player.distance(x,y) < 40:
         if not hints:
             hints = 1
@@ -148,9 +149,11 @@ def click(x, y):
                     enemyMove(en,en.piece)
                     print("Moved enemy", o)
                 if spawn == 5 or len(enemy) == 0:
-                    time.sleep(0.5)
-                    enemySpawn()
-                    spawn = 0
+                    for i in range(round(kills/3)+1):
+                        time.sleep(0.25)
+                        enemySpawn()
+                        screen.update()
+                        spawn = 0
                 else:
                     spawn += 1
 
