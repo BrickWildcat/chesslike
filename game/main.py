@@ -163,6 +163,7 @@ def enemyMove(emy,piece="pawn"):
         screen.update()
         time.sleep(1)
         resetGame()
+        return True
 
 
 
@@ -207,7 +208,8 @@ def click(x, y):
                 for en in enemy:
                     o+=1
                     print("Moving enemy",o)
-                    enemyMove(en,en.piece)
+                    if enemyMove(en,en.piece):
+                        break
                     print("Moved enemy", o)
                 if spawn == 5 or len(enemy) == 0:
                     spawn = 0
