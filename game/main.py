@@ -7,7 +7,7 @@ movetrtls = []
 spawn = 0
 kills = 0
 screen=turtle.Screen()
-screen.title("Chesslike")
+screen.title("ChessLike")
 screen.bgcolor("grey")
 screen.bgpic("game/chessdungeon.gif")
 screen.addshape("game/WhitePawn.gif")
@@ -282,12 +282,11 @@ def click(x, y):
 
 
 def resetGame():
-    global player, enemy, screen, kills, spawn
+    global player, enemy, screen, kills, spawn, playerpiece
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     print("there are",len(enemy), "enemies")
     lemy = len(enemy)
-    for i in range(lemy):
-        print("lemy ==",lemy)
+    for i in range(0,lemy-1):
         enemy[i].ht()
         enemy.pop(i)
     kills = 0
