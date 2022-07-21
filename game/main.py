@@ -1,6 +1,7 @@
 import turtle
 import random as r
 import time
+
 hints = 0
 movetrtls = []
 spawn = 0
@@ -12,6 +13,7 @@ screen.bgpic("game/chessdungeon.gif")
 screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/BlackPawn.gif")
 screen.addshape("game/BlackKnight.gif")
+screen.addshape("game/BlackBishop.gif")
 
 
 screen.setup(width=700, height=700)
@@ -22,7 +24,7 @@ player=turtle.Turtle()
 player.shape("game/WhitePawn.gif")
 # player.color("green")
 player.penup()
-player.goto(120, -120)
+player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
 playerpiece = "pawn"
 print("Spawned player")
 enemy = []
@@ -31,12 +33,16 @@ enemy = []
 def enemySpawn():
     global player, enemy
     newguy =turtle.Turtle()
-    if r.randint(0,2):
+    seed = r.randint(0,9)
+    if seed < 5:
         newguy.piece = "pawn"
         newguy.shape("game/BlackPawn.gif")
-    else:
+    elif seed < 8:
         newguy.piece = "knight"
         newguy.shape("game/BlackKnight.gif")
+    else:
+        newguy.piece = "bishop"
+        newguy.shape("game/BlackBishop.gif")
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
@@ -106,7 +112,7 @@ def enemyMove(emy,piece="pawn"):
         for xy in piecearr:
             x = emy.xcor() + xy[0]
             y = emy.ycor() + xy[1]
-            weights.append((340-player.distance(x,y))*10)
+            weights.append((800-player.distance(x,y)))
             print("Generating move")
         seed = r.choices(piecearr,weights)
         for b in badmoves:
@@ -144,7 +150,7 @@ def enemyMove(emy,piece="pawn"):
                 if conf:
                     print("Removing bad move")
                     badmoves.append(move)
-            if len(piecearr) == 0:
+            if len(badmoves) == len(piecearr):
                 print("No good moves, staying in place")
                 x = emy.xcor()
                 y = emy.ycor()
@@ -216,7 +222,7 @@ def click(x, y):
 
 def resetGame():
     global player, enemy, screen, kills, spawn
-    player.goto(120,-120)
+    player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     for e in enemy:
         e.ht()
         enemy.remove(e)
