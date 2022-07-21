@@ -1,7 +1,7 @@
 import turtle
 import random as r
 import time
-hp = 9
+hp = 1
 hints = 0
 movetrtls = []
 spawn = 0
@@ -286,9 +286,11 @@ def resetGame():
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     print("there are",len(enemy), "enemies")
     lemy = len(enemy)
-    for i in range(0,lemy-1):
-        enemy[i].ht()
-        enemy.pop(i)
+    for i in range(lemy):
+        print("lemy ==",lemy)
+        enemy[i-1].ht()
+        enemy.pop(i-1)
+        print("Removed enemy",i+1)
     kills = 0
     spawn = 0
     playerpiece = "pawn"
