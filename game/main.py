@@ -14,10 +14,12 @@ screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/WhiteKnight.gif")
 screen.addshape("game/WhiteBishop.gif")
 screen.addshape("game/WhiteRook.gif")
+screen.addshape("game/WhiteQueen.gif")
 screen.addshape("game/BlackPawn.gif")
 screen.addshape("game/BlackKnight.gif")
 screen.addshape("game/BlackBishop.gif")
 screen.addshape("game/BlackRook.gif")
+screen.addshape("game/BlackQueen.gif")
 screen.addshape("game/Marker2.gif")
 
 
@@ -49,7 +51,7 @@ rookselect.shape("game/WhiteRook.gif")
 rookselect.goto(400,-60)
 queenselect = turtle.Turtle()
 queenselect.penup()
-queenselect.shape("game/WhiteRook.gif")
+queenselect.shape("game/WhiteQueen.gif")
 queenselect.goto(400,-140)
 
 def uiUpdate():
