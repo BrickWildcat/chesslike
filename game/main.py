@@ -8,7 +8,7 @@ spawn = 1
 screen=turtle.Screen()
 screen.title("Chesslike")
 screen.bgcolor("grey")
-screen.bgpic("game/checkerboard.gif")
+screen.bgpic("game/checkerboard8x8.gif")
 screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/BlackPawn.gif")
 
@@ -40,7 +40,7 @@ def enemySpawn():
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
-        newguy.goto(r.randint(0,3)*80-120, r.randint(0,3)*80-120)
+        newguy.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     enemy.append(newguy)
 
 def enemyKill():
@@ -54,9 +54,6 @@ print("Spawning enemy 1")
 enemySpawn()
 print("Spawned enemy 1")
 print("Spawning enemy 2")
-enemySpawn()
-print("Spawned enemy 2")
-
 
 pawn = [[-80,0],[-80,80],[0,80],[80,80],[80,0],[80,-80],[0,-80],[-80,-80]]
 knight = [[-80,160],[80,160],[160,80],[160,-80],[80,-160],[-80,-160],[-160,80],[-160,-80]]
@@ -102,7 +99,7 @@ def enemyMove(emy,piece="pawn"):
             if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1] and not cft:
                 x = emy.xcor() + xy[0]
                 y = emy.ycor() + xy[1]
-        if not(x > 120 or y > 120 or x < -120 or y < -120 or conflict):
+        if not(x > 280 or y > 280 or x < -280 or y < -280 or conflict):
             validmove = 1
     time.sleep(0.5)
     emy.goto(x, y)
@@ -124,7 +121,7 @@ def click(x, y):
                 ny = piecearr[i][1]
                 x = tx + nx
                 y = ty + ny
-                if x > 120 or y > 120 or x < -120 or y < -120:
+                if x > 280 or y > 280 or x < -280 or y < -280:
                     movetrtls[i].ht
                 else:
                     movetrtls[i].goto(x,y)
