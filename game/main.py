@@ -149,11 +149,11 @@ def click(x, y):
                     enemyMove(en,en.piece)
                     print("Moved enemy", o)
                 if spawn == 5 or len(enemy) == 0:
+                    spawn = 0
                     for i in range(round(kills/3)+1):
                         time.sleep(0.25)
                         enemySpawn()
                         screen.update()
-                        spawn = 0
                 else:
                     spawn += 1
 
