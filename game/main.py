@@ -15,10 +15,10 @@ screen.addshape("game/BlackPawn.gif")
 screen.addshape("game/BlackKnight.gif")
 screen.addshape("game/BlackBishop.gif")
 screen.addshape("game/BlackRook.gif")
-screen.addshape("game/Marker.gif")
+screen.addshape("game/Marker2.gif")
 
 
-screen.setup(width=700, height=700)
+screen.setup(width=1000, height=700)
 screen.tracer(0)
 
 print("Spawning player")
@@ -52,6 +52,9 @@ def enemySpawn():
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
         newguy.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
+    for e in enemy:
+            while e.distance(newguy) == 0:
+               newguy.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     enemy.append(newguy)
 
 def enemyKill():
@@ -83,7 +86,7 @@ for i in range(len(queen)):
     movetrtls.append(turtle.Turtle())
 for t in movetrtls:
     t.penup()
-    t.shape("game/Marker.gif")
+    t.shape("game/Marker2.gif")
     t.ht()
 
 def pieceArr(piece):
@@ -231,12 +234,11 @@ def resetGame():
     global player, enemy, screen, kills, spawn
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     print("there are",len(enemy), "enemies")
-    i = 1
-    for e in enemy:
-        print("removing enemy",i,"(",e.piece,")")
-        e.ht()
-        enemy.remove(e)
-        print("enemy",i,"(",e.piece,") removed")
+    lemy = len(enemy)
+    for i in range(lemy):
+        print("lemy ==",lemy)
+        enemy[i].ht()
+        enemy.pop(i)
     kills = 0
     spawn = 0
     playerpiece = "pawn"
