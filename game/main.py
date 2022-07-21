@@ -22,7 +22,7 @@ player.shape("game/WhitePawn.gif")
 # player.color("green")
 player.penup()
 player.goto(120, -120)
-playerpiece = "queen"
+playerpiece = "pawn"
 print("Spawned player")
 enemy = []
 
@@ -87,6 +87,7 @@ def enemyMove(emy,piece="pawn"):
     piecearr = pieceArr(piece)
     while not validmove:
         weights = []
+        print("Assigning weights")
         for xy in piecearr:
             x = emy.xcor() + xy[0]
             y = emy.ycor() + xy[1]
@@ -94,16 +95,37 @@ def enemyMove(emy,piece="pawn"):
         seed = r.choices(piecearr,weights)
         x = emy.xcor() + seed[0][0]
         y = emy.ycor() + seed[0][1]
+        print("Generated move")
         conflict = 0
+        print("Checking conflicts")
         for e in enemy:
             if e.xcor() == x and e.ycor() == y:
                 conflict = 1
+                print("Conflict found")
+        print("Checking to see if I can kill player")
         for xy in piecearr: 
             if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1]:
+                print("Kill move found")
                 x = emy.xcor() + xy[0]
                 y = emy.ycor() + xy[1]
         if not(x > 280 or y > 280 or x < -280 or y < -280 or conflict):
+            print("Valid move found")
             validmove = 1
+        else:
+            print("Invalid move, checking for bad moves")
+            conflicts = 0
+            for move in piecearr:
+                x = emy.xcor() + move[0]
+                y = emy.ycor() + move[1]
+                for e in enemy:
+                    if e.xcor() == x and e.ycor() == y or x > 280 or y > 280 or x < -280 or y < -280:
+                        print("Removing bad move")
+                        piecearr.remove(move)
+            if len(piecearr) == 0:
+                print("No good moves, staying in place")
+                x = emy.xcor()
+                y = emy.ycor()
+                validmove = 1
     time.sleep(0.5)
     emy.goto(x, y)
     screen.update()
@@ -124,6 +146,9 @@ def click(x, y):
                 ny = piecearr[i][1]
                 x = tx + nx
                 y = ty + ny
+                for obst in enemy:
+                    if obst.xcor() == x and obst.ycor() == y:
+                        pass
                 if x > 280 or y > 280 or x < -280 or y < -280:
                     movetrtls[i].ht
                 else:
@@ -154,6 +179,7 @@ def click(x, y):
                     spawn = 0
                     for i in range(round(kills/3)+1-len(enemy)):
                         time.sleep(0.25)
+                        print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
                 else:
