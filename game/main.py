@@ -11,6 +11,7 @@ screen.bgcolor("grey")
 screen.bgpic("game/chessdungeon.gif")
 screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/BlackPawn.gif")
+screen.addshape("game/BlackKnight.gif")
 
 
 screen.setup(width=700, height=700)
@@ -35,8 +36,7 @@ def enemySpawn():
         newguy.shape("game/BlackPawn.gif")
     else:
         newguy.piece = "knight"
-        newguy.shape("square")
-        newguy.color("red")
+        newguy.shape("game/BlackKnight.gif")
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
@@ -58,10 +58,16 @@ print("Spawning enemy 2")
 
 pawn = [[-80,0],[-80,80],[0,80],[80,80],[80,0],[80,-80],[0,-80],[-80,-80]]
 knight = [[-80,160],[80,160],[160,80],[160,-80],[80,-160],[-80,-160],[-160,80],[-160,-80]]
+bishop = []
+rook = []
 queen = []
 for i in range(1,7):
     for xy in pawn:
         queen.append([xy[0]*i,xy[1]*i])
+        if abs(xy[0]) == abs(xy[1]):
+            bishop.append([xy[0]*i,xy[1]*i])
+        elif xy[0] == 0 or xy[1] == 0:
+            rook.append([xy[0]*i,xy[1]*i])
 for i in range(len(queen)):
     movetrtls.append(turtle.Turtle())
 for t in movetrtls:
@@ -77,8 +83,14 @@ def pieceArr(piece):
         return pawn
     elif piece == "knight":
         return knight
+    elif piece == "bishop":
+        return bishop
+    elif piece == "rook":
+        return rook
     elif piece == "queen":
         return queen
+
+
 
 
 
@@ -189,8 +201,6 @@ def click(x, y):
 
 screen.listen()
 screen.onclick(click)
-for t in movetrtls:
-    screen.onclick(click)
 
 while True:
     screen.update()
