@@ -14,6 +14,7 @@ screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/BlackPawn.gif")
 screen.addshape("game/BlackKnight.gif")
 screen.addshape("game/BlackBishop.gif")
+screen.addshape("game/Marker.gif")
 
 
 screen.setup(width=700, height=700)
@@ -25,7 +26,7 @@ player.shape("game/WhitePawn.gif")
 # player.color("green")
 player.penup()
 player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
-playerpiece = "pawn"
+playerpiece = "queen"
 print("Spawned player")
 enemy = []
 
@@ -67,7 +68,7 @@ knight = [[-80,160],[80,160],[160,80],[160,-80],[80,-160],[-80,-160],[-160,80],[
 bishop = []
 rook = []
 queen = []
-for i in range(1,7):
+for i in range(1,8):
     for xy in pawn:
         queen.append([xy[0]*i,xy[1]*i])
         if abs(xy[0]) == abs(xy[1]):
@@ -78,9 +79,7 @@ for i in range(len(queen)):
     movetrtls.append(turtle.Turtle())
 for t in movetrtls:
     t.penup()
-    t.shape("circle")
-    t.shapesize(1.5)
-    t.color("red")
+    t.shape("game/Marker.gif")
     t.ht()
 
 def pieceArr(piece):
@@ -181,10 +180,9 @@ def click(x, y):
                 ny = piecearr[i][1]
                 x = tx + nx
                 y = ty + ny
-                for obst in enemy:
-                    if obst.xcor() == x and obst.ycor() == y:
-                        pass
-                if x > 280 or y > 280 or x < -280 or y < -280:
+                stops = []
+                no = 0
+                if x > 280 or y > 280 or x < -280 or y < -280 or no:
                     movetrtls[i].ht
                 else:
                     movetrtls[i].goto(x,y)
@@ -234,9 +232,6 @@ def resetGame():
     player.st()
     enemySpawn()
     screen.update()
-
-
-
 screen.listen()
 screen.onclick(click)
 
