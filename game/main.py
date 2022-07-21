@@ -1,7 +1,7 @@
 import turtle
 import random as r
 import time
-
+hp = 9
 hints = 0
 movetrtls = []
 spawn = 0
@@ -11,6 +11,9 @@ screen.title("Chesslike")
 screen.bgcolor("grey")
 screen.bgpic("game/chessdungeon.gif")
 screen.addshape("game/WhitePawn.gif")
+screen.addshape("game/WhiteKnight.gif")
+screen.addshape("game/WhiteBishop.gif")
+screen.addshape("game/WhiteRook.gif")
 screen.addshape("game/BlackPawn.gif")
 screen.addshape("game/BlackKnight.gif")
 screen.addshape("game/BlackBishop.gif")
@@ -20,6 +23,52 @@ screen.addshape("game/Marker2.gif")
 
 screen.setup(width=1000, height=700)
 screen.tracer(0)
+
+ui = turtle.Turtle()
+ui.penup()
+ui.ht()
+ui.color("black")
+ui.goto(410,250)
+ui.pendown()
+ui.write("{} HP".format(hp), align="center", font=("Pixeloid Sans", 30))
+pawnselect = turtle.Turtle()
+pawnselect.penup()
+pawnselect.shape("game/WhitePawn.gif")
+pawnselect.goto(400,180)
+knightselect = turtle.Turtle()
+knightselect.penup()
+knightselect.shape("game/WhiteKnight.gif")
+knightselect.goto(400,100)
+bishopselect = turtle.Turtle()
+bishopselect.penup()
+bishopselect.shape("game/WhiteBishop.gif")
+bishopselect.goto(400,20)
+rookselect = turtle.Turtle()
+rookselect.penup()
+rookselect.shape("game/WhiteRook.gif")
+rookselect.goto(400,-60)
+queenselect = turtle.Turtle()
+queenselect.penup()
+queenselect.shape("game/WhiteRook.gif")
+queenselect.goto(400,-140)
+
+def uiUpdate():
+    ui.clear()
+    ui.write("{} HP".format(hp), align="center", font=("Pixeloid Sans", 30))
+    pawnselect.st()
+    knightselect.ht()
+    bishopselect.ht()
+    rookselect.ht()
+    queenselect.ht()
+    if hp >= 3:
+        knightselect.st()
+        bishopselect.st()
+    if hp >= 5:
+        rookselect.st()
+    if hp >= 9:
+        queenselect.st()
+
+uiUpdate()
 
 print("Spawning player")
 player=turtle.Turtle()
