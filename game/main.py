@@ -8,7 +8,7 @@ kills = 0
 screen=turtle.Screen()
 screen.title("Chesslike")
 screen.bgcolor("grey")
-screen.bgpic("game/checkerboard8x8.gif")
+screen.bgpic("game/chessdungeon.gif")
 screen.addshape("game/WhitePawn.gif")
 screen.addshape("game/BlackPawn.gif")
 
@@ -22,7 +22,7 @@ player.shape("game/WhitePawn.gif")
 # player.color("green")
 player.penup()
 player.goto(120, -120)
-playerpiece = "pawn"
+playerpiece = "queen"
 print("Spawned player")
 enemy = []
 
@@ -58,7 +58,11 @@ print("Spawning enemy 2")
 
 pawn = [[-80,0],[-80,80],[0,80],[80,80],[80,0],[80,-80],[0,-80],[-80,-80]]
 knight = [[-80,160],[80,160],[160,80],[160,-80],[80,-160],[-80,-160],[-160,80],[-160,-80]]
-for i in range(8):
+queen = []
+for i in range(1,7):
+    for xy in pawn:
+        queen.append([xy[0]*i,xy[1]*i])
+for i in range(len(queen)):
     movetrtls.append(turtle.Turtle())
 for t in movetrtls:
     t.penup()
@@ -73,6 +77,8 @@ def pieceArr(piece):
         return pawn
     elif piece == "knight":
         return knight
+    elif piece == "queen":
+        return queen
 
 
 
@@ -93,11 +99,7 @@ def enemyMove(emy,piece="pawn"):
             if e.xcor() == x and e.ycor() == y:
                 conflict = 1
         for xy in piecearr: 
-            cft = 0
-            for e in enemy:
-                if e.xcor() == emy.xcor()+xy[0] and emy.ycor()+xy[1]:
-                    cft = 1
-            if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1] and not cft:
+            if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1]:
                 x = emy.xcor() + xy[0]
                 y = emy.ycor() + xy[1]
         if not(x > 280 or y > 280 or x < -280 or y < -280 or conflict):
@@ -115,7 +117,7 @@ def click(x, y):
         if not hints:
             hints = 1
             piecearr = pieceArr(playerpiece)
-            for i in range(8):
+            for i in range(len(piecearr)):
                 tx = player.xcor()
                 ty = player.ycor()
                 nx = piecearr[i][0]
@@ -150,7 +152,7 @@ def click(x, y):
                     print("Moved enemy", o)
                 if spawn == 5 or len(enemy) == 0:
                     spawn = 0
-                    for i in range(round(kills/3)+1):
+                    for i in range(round(kills/3)+1-len(enemy)):
                         time.sleep(0.25)
                         enemySpawn()
                         screen.update()
