@@ -205,14 +205,20 @@ def isBlocked(trtl,move):
         loops = abs(move[0]/80)
     else:
         loops = abs(move[1]/80)
-    for i in range(loops):
-        x = trtl.xcor()+(i*(move[0]/loops))
-        y = trtl.ycor()+(i*(move[1]/loops))
-        for e in enemy:
-            if e.distance(x,y) == 0:
+    eitx = move[0]/loops
+    eity = move[1]/loops
+    print("eitx",eitx)
+    print("eity",eity)
+    print("loops",loops)
+    for i in range(1,round(loops)):
+        if i != loops:
+            x = trtl.xcor()+(i*eitx)
+            y = trtl.ycor()+(i*eity)
+            for e in enemy:
+                if e.distance(x,y) == 0:
+                    return True
+            if player.distance(x,y) == 0:
                 return True
-        if player.distance(x,y) == 0:
-            return True
     return False
 
 def enemyMove(emy,piece):
@@ -241,13 +247,14 @@ def enemyMove(emy,piece):
         print("Generated move")
         conflict = 0
         print("Checking conflicts")
+        conflict = isBlocked(emy,seed[0])
         for e in enemy:
             if e.xcor() == x and e.ycor() == y:
                 conflict = 1
                 print("Conflict found")
         print("Checking to see if I can kill player")
         for xy in piecearr: 
-            if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1]:
+            if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1] and not(isBlocked(emy,xy)):
                 print("Kill move found")
                 kill = 1
                 x = emy.xcor() + xy[0]
@@ -262,7 +269,7 @@ def enemyMove(emy,piece):
                 x = emy.xcor() + move[0]
                 y = emy.ycor() + move[1]
                 for e in enemy:
-                    if e.xcor() == x and e.ycor() == y or x > 280 or y > 280 or x < -280 or y < -280:
+                    if e.distance(x,y) == 0 or x > 280 or y > 280 or x < -280 or y < -280 or isBlocked(emy,move):
                         conf = 1
                 if conf:
                     print("Removing bad move")
@@ -272,7 +279,7 @@ def enemyMove(emy,piece):
                 x = emy.xcor()
                 y = emy.ycor()
                 validmove = 1
-    time.sleep(1/len(enemy))
+    time.sleep(1/(2*len(enemy)))
     emy.clear()
     emy.width(5)
     emy.pendown()
@@ -318,8 +325,7 @@ def click(x, y):
                 x = tx + nx
                 y = ty + ny
                 stops = []
-                no = 0
-                if x > 280 or y > 280 or x < -280 or y < -280 or no:
+                if x > 280 or y > 280 or x < -280 or y < -280 or isBlocked(player,piecearr[i]):
                     movetrtls[i].ht
                 else:
                     movetrtls[i].goto(x,y)
@@ -361,7 +367,7 @@ def click(x, y):
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
                     for i in range(round(kills/5)+2-len(enemy)):
-                        time.sleep(1/len(enemy))
+                        time.sleep(1/(2*len(enemy)))
                         print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
@@ -425,9 +431,9 @@ def click(x, y):
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
                     for i in range(round(kills/5)+1-len(enemy)):
-                        time.sleep(1/len(enemy))
                         print("Spawning enemy",i+1)
                         enemySpawn()
+                        time.sleep(1/(2*len(enemy)))
                         screen.update()
                     if heart == 0:
                         heartSpawn()
