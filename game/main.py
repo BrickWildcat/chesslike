@@ -101,14 +101,14 @@ def printMoves():
 
 uiUpdate()
 
-print("Spawning player")
+# print("Spawning player")
 player=turtle.Turtle()
 player.shape("game/WhitePawn.gif")
 player.color("white")
 player.penup()
 player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
 player.piece = "pawn"
-print("Spawned player")
+# print("Spawned player")
 enemy = []
 
 def enemySpawn():
@@ -151,9 +151,9 @@ def enemyKill():
             return True
     return False
 
-print("Spawning enemy 1")
+# print("Spawning enemy 1")
 enemySpawn()
-print("Spawned enemy 1")
+# print("Spawned enemy 1")
 
 
 pawn = [[-80,0],[-80,80],[0,80],[80,80],[80,0],[80,-80],[0,-80],[-80,-80]]
@@ -209,9 +209,9 @@ def isBlocked(trtl,move):
         loops = abs(move[1]/80)
     eitx = move[0]/loops
     eity = move[1]/loops
-    print("eitx",eitx)
-    print("eity",eity)
-    print("loops",loops)
+    # print("eitx",eitx)
+    # print("eity",eity)
+    # print("loops",loops)
     for i in range(1,round(loops)):
         if i != loops:
             x = trtl.xcor()+(i*eitx)
@@ -233,39 +233,39 @@ def enemyMove(emy,piece):
     piecearr = pieceArr(piece)
     while not validmove:
         weights = []
-        print("Assigning weights")
+        # print("Assigning weights")
         for xy in piecearr:
             x = emy.xcor() + xy[0]
             y = emy.ycor() + xy[1]
             weights.append((800-player.distance(x,y)))
-            print("Generating move")
+            # print("Generating move")
         seed = r.choices(piecearr,weights)
         for b in badmoves:
             while seed[0] == b:
-                print("Regen bad move")
+                # print("Regen bad move")
                 seed = r.choices(piecearr,weights)
         x = emy.xcor() + seed[0][0]
         y = emy.ycor() + seed[0][1]
-        print("Generated move")
+        # print("Generated move")
         conflict = 0
-        print("Checking conflicts")
+        # print("Checking conflicts")
         conflict = isBlocked(emy,seed[0])
         for e in enemy:
             if e.xcor() == x and e.ycor() == y:
                 conflict = 1
-                print("Conflict found")
-        print("Checking to see if I can kill player")
+                # print("Conflict found")
+        # print("Checking to see if I can kill player")
         for xy in piecearr: 
             if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1] and not(isBlocked(emy,xy)):
-                print("Kill move found")
+                # print("Kill move found")
                 kill = 1
                 x = emy.xcor() + xy[0]
                 y = emy.ycor() + xy[1]
         if not(x > 280 or y > 280 or x < -280 or y < -280 or conflict):
-            print("Valid move found")
+            # print("Valid move found")
             validmove = 1
         else:
-            print("Invalid move, checking for bad moves")
+            # print("Invalid move, checking for bad moves")
             for move in piecearr:
                 conf = 0
                 x = emy.xcor() + move[0]
@@ -274,10 +274,10 @@ def enemyMove(emy,piece):
                     if e.distance(x,y) == 0 or x > 280 or y > 280 or x < -280 or y < -280 or isBlocked(emy,move):
                         conf = 1
                 if conf:
-                    print("Removing bad move")
+                    # print("Removing bad move")
                     badmoves.append(move)
             if len(badmoves) == len(piecearr):
-                print("No good moves, staying in place")
+                # print("No good moves, staying in place")
                 x = emy.xcor()
                 y = emy.ycor()
                 validmove = 1
@@ -350,11 +350,11 @@ def click(x, y):
                 ded = 0
                 for en in enemy:
                     o+=1
-                    print("Moving enemy",o)
+                    # print("Moving enemy",o)
                     if enemyMove(en,en.piece):
                         ded = 1
                         break
-                    print("Moved enemy", o)
+                    # print("Moved enemy", o)
                     if len(moves) == 16:
                         moves.pop(0)
                     nxmv = [en,xgrd[grid.index(en.xcor())]+ygrd[grid.index(en.ycor())]]
@@ -372,7 +372,7 @@ def click(x, y):
                     spawn = 0
                     for i in range(round(kills/5)+2-len(enemy)):
                         time.sleep(0.5)
-                        print("Spawning enemy",i+1)
+                        # print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
                     if heart == 0:
@@ -381,7 +381,7 @@ def click(x, y):
                     spawn += 1
         for t in movetrtls:
             if t.distance(x,y) < 40 and t.isvisible():
-                print("Moving player")
+                # print("Moving player")
                 player.goto(t.xcor(),t.ycor())
                 nxmv = [player,xgrd[grid.index(player.xcor())]+ygrd[grid.index(player.ycor())]]
                 if enemyKill():
@@ -402,7 +402,7 @@ def click(x, y):
                 for t in movetrtls:
                     t.ht()
                 screen.update()
-                print("Moved player")
+                # print("Moved player")
                 if heart != 0:
                     if player.distance(heart) == 0:
                         hp += 1
@@ -414,11 +414,11 @@ def click(x, y):
                 ded = 0
                 for en in enemy:
                     o+=1
-                    print("Moving enemy",o)
+                    # print("Moving enemy",o)
                     if enemyMove(en,en.piece):
                         ded = 1
                         break
-                    print("Moved enemy", o)
+                    # print("Moved enemy", o)
                     if len(moves) == 16:
                         moves.pop(0)
                     nxmv = [en,xgrd[grid.index(en.xcor())]+ygrd[grid.index(en.ycor())]]
@@ -435,7 +435,7 @@ def click(x, y):
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
                     for i in range(round(kills/5)+1-len(enemy)):
-                        print("Spawning enemy",i+1)
+                        # print("Spawning enemy",i+1)
                         enemySpawn()
                         time.sleep(0.5)
                         screen.update()
@@ -450,14 +450,14 @@ def resetGame():
     for t in movetrtls:
         t.ht()
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
-    print("there are",len(enemy), "enemies")
+    # print("there are",len(enemy), "enemies")
     lemy = len(enemy)
     for i in range(lemy-1,-1,-1):
-        print(i)
+        # print(i)
         enemy[i].clear()
         enemy[i].ht()
         enemy.pop(i)
-        print("Removed enemy",i+1)
+        # print("Removed enemy",i+1)
     spawn = 0
     if heart != 0:
         heart.ht()
