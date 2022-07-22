@@ -257,7 +257,7 @@ def enemyMove(emy,piece):
                 x = emy.xcor()
                 y = emy.ycor()
                 validmove = 1
-    time.sleep(0.5)
+    time.sleep(1/len(enemy))
     emy.clear()
     emy.width(5)
     emy.pendown()
@@ -346,7 +346,7 @@ def click(x, y):
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
                     for i in range(round(kills/5)+2-len(enemy)):
-                        time.sleep(0.25)
+                        time.sleep(1/len(enemy))
                         print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
@@ -410,7 +410,7 @@ def click(x, y):
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
                     for i in range(round(kills/3)+1-len(enemy)):
-                        time.sleep(0.25)
+                        time.sleep(1/len(enemy))
                         print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
