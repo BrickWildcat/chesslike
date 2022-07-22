@@ -5,6 +5,7 @@ import os
 import atexit
 import math
 
+
 hp = 1
 hints = 0
 movetrtls = []
@@ -28,6 +29,7 @@ screen.addshape("game/BlackRook.gif")
 screen.addshape("game/BlackQueen.gif")
 screen.addshape("game/Marker2.gif")
 screen.addshape("game/HeartB.gif")
+screen.addshape("game/Title.gif")
 grid = [-280, -200, -120, -40, 40, 120, 200, 280]
 ygrd = ["8","7","6","5","4","3","2","1"]
 xgrd = ["a","b","c","d","e","f","g","h"]
@@ -279,7 +281,7 @@ def enemyMove(emy,piece):
                 x = emy.xcor()
                 y = emy.ycor()
                 validmove = 1
-    time.sleep(1/(2*len(enemy)))
+    time.sleep(0.5)
     emy.clear()
     emy.width(5)
     emy.pendown()
@@ -313,6 +315,8 @@ def enemyMove(emy,piece):
 
 def click(x, y):
     global player, hints, spawn, kills, screen, heart, hp
+    if title.isvisible():
+        title.ht()
     if player.distance(x,y) < 40:
         if not hints:
             hints = 1
@@ -367,7 +371,7 @@ def click(x, y):
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
                     for i in range(round(kills/5)+2-len(enemy)):
-                        time.sleep(1/(2*len(enemy)))
+                        time.sleep(0.5)
                         print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
@@ -433,7 +437,7 @@ def click(x, y):
                     for i in range(round(kills/5)+1-len(enemy)):
                         print("Spawning enemy",i+1)
                         enemySpawn()
-                        time.sleep(1/(2*len(enemy)))
+                        time.sleep(0.5)
                         screen.update()
                     if heart == 0:
                         heartSpawn()
@@ -470,14 +474,16 @@ def resetGame():
         elif hp < 9 and (player.piece == "queen"):
             player.piece = "rook"
             player.shape("game/WhiteQueen.gif")
+        enemySpawn()
         uiUpdate()
     else:
         moves = []
         kills = 0
         player.piece = "pawn"
         player.shape("game/WhitePawn.gif")
+        enemySpawn()
+        title.st()
     player.st()
-    enemySpawn()
     moveui.clear()
     screen.update()
 screen.listen()
@@ -485,6 +491,10 @@ screen.onclick(click)
 
 def exit_handler():
     os.system("pkill aplay")
+
+title = turtle.Turtle()
+title.shape("game/Title.gif")
+title.goto(0,0)
 
 atexit.register(exit_handler)
 starttime = time.time_ns() - (38*(10**9))
