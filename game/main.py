@@ -409,7 +409,7 @@ def click(x, y):
                     printMoves()
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
-                    for i in range(round((5*math.log(40*(kills+2)))-9.5)):
+                    for i in range(round(kills/3)+2-len(enemy)):
                         time.sleep(0.25)
                         print("Spawning enemy",i+1)
                         enemySpawn()
@@ -421,7 +421,9 @@ def click(x, y):
 
 
 def resetGame():
-    global player, enemy, screen, kills, spawn, moves, moveui, heart, hp
+    global player, enemy, screen, kills, spawn, moves, moveui, heart, hp, movetrtls
+    for t in movetrtls:
+        t.ht()
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     print("there are",len(enemy), "enemies")
     lemy = len(enemy)
@@ -431,9 +433,7 @@ def resetGame():
         enemy[i].ht()
         enemy.pop(i)
         print("Removed enemy",i+1)
-    
     spawn = 0
-    moves = []
     if heart != 0:
         heart.ht()
         heart = 0
@@ -451,6 +451,7 @@ def resetGame():
             player.shape("game/WhiteQueen.gif")
         uiUpdate()
     else:
+        moves = []
         kills = 0
         player.piece = "pawn"
         player.shape("game/WhitePawn.gif")
