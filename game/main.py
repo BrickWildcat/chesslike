@@ -3,6 +3,7 @@ import random as r
 import time
 import os
 import atexit
+import math
 
 hp = 1
 hints = 0
@@ -408,7 +409,7 @@ def click(x, y):
                     printMoves()
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
-                    for i in range(round(kills/3)+2-len(enemy)):
+                    for i in range(round((5*math.log(40*(kills+2)))-9.5)):
                         time.sleep(0.25)
                         print("Spawning enemy",i+1)
                         enemySpawn()
@@ -438,6 +439,7 @@ def resetGame():
         heart = 0
     if hp>1:
         hp -= 1
+        kills = hp
         if hp < 3 and (player.piece == "bishop" or player.piece == "knight"):
             player.piece = "pawn"
             player.shape("game/WhitePawn.gif")
