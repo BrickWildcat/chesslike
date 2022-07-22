@@ -7,5 +7,3 @@ Play as a white pawn capturing hordes of enemies, doing your best to survive. Cl
 
 # Running the game
 Linux: `python ~/path_to/game/main.py` or run `play.sh`
-
-Windows: Double-click `game/main.py`
