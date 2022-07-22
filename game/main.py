@@ -199,6 +199,21 @@ def heartSpawn():
                newguy.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     heart = newguy
 
+def isBlocked(trtl,move):
+    global player, enemy
+    if move[0] != 0:
+        loops = abs(move[0]/80)
+    else:
+        loops = abs(move[1]/80)
+    for i in range(loops):
+        x = trtl.xcor()+(i*(move[0]/loops))
+        y = trtl.ycor()+(i*(move[1]/loops))
+        for e in enemy:
+            if e.distance(x,y) == 0:
+                return True
+        if player.distance(x,y) == 0:
+            return True
+    return False
 
 def enemyMove(emy,piece):
     global screen, player, moves, heart
@@ -409,7 +424,7 @@ def click(x, y):
                     printMoves()
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
-                    for i in range(round(kills/3)+1-len(enemy)):
+                    for i in range(round(kills/5)+1-len(enemy)):
                         time.sleep(1/len(enemy))
                         print("Spawning enemy",i+1)
                         enemySpawn()
