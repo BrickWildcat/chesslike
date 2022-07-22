@@ -4,6 +4,7 @@ import time
 hp = 1
 hints = 0
 movetrtls = []
+moves = []
 spawn = 0
 kills = 0
 screen=turtle.Screen()
@@ -21,8 +22,9 @@ screen.addshape("game/BlackBishop.gif")
 screen.addshape("game/BlackRook.gif")
 screen.addshape("game/BlackQueen.gif")
 screen.addshape("game/Marker2.gif")
-
-
+grid = [-280, -200, -120, -40, 40, 120, 200, 280]
+ygrd = ["8","7","6","5","4","3","2","1"]
+xgrd = ["a","b","c","d","e","f","g","h"]
 screen.setup(width=1000, height=700)
 screen.tracer(0)
 
@@ -33,6 +35,9 @@ ui.color("black")
 ui.goto(410,250)
 ui.pendown()
 ui.write("{} HP".format(hp), align="center", font=("Pixeloid Sans", 30))
+moveui = turtle.Turtle()
+moveui.penup()
+moveui.ht()
 pawnselect = turtle.Turtle()
 pawnselect.penup()
 pawnselect.shape("game/WhitePawn.gif")
@@ -70,15 +75,26 @@ def uiUpdate():
     if hp >= 9:
         queenselect.st()
 
+def printMoves():
+    global moves, screen
+    moveui.goto(-410,280)
+    moveui.clear()
+    for m in moves:
+        moveui.color(m[0].pencolor())
+        moveui.write(m[1], align="center", font=("Pixeloid Sans", 25))
+        moveui.goto(-410,moveui.ycor()-40)
+    screen.update()
+        
+
 uiUpdate()
 
 print("Spawning player")
 player=turtle.Turtle()
 player.shape("game/WhitePawn.gif")
-# player.color("green")
+player.color("white")
 player.penup()
 player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
-playerpiece = "pawn"
+player.piece = "pawn"
 print("Spawned player")
 enemy = []
 
@@ -86,7 +102,6 @@ def enemySpawn():
     global player, enemy
     newguy =turtle.Turtle()
     newguy.color(r.choice(["red","orange red","orange","gold","yellow","lime","green","cyan","light blue","blue","medium slate blue","dark violet","magenta","deep pink"]))
-    newguy.pensize(10)
     seed = r.randint(0,14)
     if seed < 7:
         newguy.piece = "pawn"
@@ -160,7 +175,7 @@ def pieceArr(piece):
 
 
 def enemyMove(emy,piece="pawn"):
-    global screen, player
+    global screen, player, moves
     kill = 0
     badmoves = []
     validmove = 0
@@ -216,12 +231,26 @@ def enemyMove(emy,piece="pawn"):
                 validmove = 1
     time.sleep(0.5)
     emy.clear()
+    emy.width(5)
     emy.pendown()
     emy.goto(x, y)
     emy.penup()
     screen.update()
     if kill:
         player.ht()
+        if len(moves) == 16:
+            moves.pop(0)
+        nxmv = [emy,xgrd[grid.index(emy.xcor())]+ygrd[grid.index(emy.ycor())]]
+        if emy.piece == "knight":
+            nxmv[1] = "N"+nxmv[1]
+        elif emy.piece == "bishop":
+            nxmv[1] = "B"+nxmv[1]
+        elif emy.piece == "rook":
+            nxmv[1] = "R"+nxmv[1]
+        elif emy.piece == "rook":
+            nxmv[1] = "Q"+nxmv[1]
+        moves.append(nxmv)
+        printMoves()
         screen.update()
         time.sleep(1)
         screen.update()
@@ -232,11 +261,11 @@ def enemyMove(emy,piece="pawn"):
 
 
 def click(x, y):
-    global player, hints, spawn, playerpiece, kills, screen
+    global player, hints, spawn, kills, screen
     if player.distance(x,y) < 40:
         if not hints:
             hints = 1
-            piecearr = pieceArr(playerpiece)
+            piecearr = pieceArr(player.piece)
             for i in range(len(piecearr)):
                 tx = player.xcor()
                 ty = player.ycor()
@@ -261,6 +290,19 @@ def click(x, y):
                 print("Moving player")
                 player.goto(t.xcor(),t.ycor())
                 enemyKill()
+                if len(moves) == 16:
+                    moves.pop(0)
+                nxmv = [player,xgrd[grid.index(player.xcor())]+ygrd[grid.index(player.ycor())]]
+                if player.piece == "knight":
+                  nxmv[1] = "N"+nxmv[1]
+                elif player.piece == "bishop":
+                    nxmv[1] = "B"+nxmv[1]
+                elif player.piece == "rook":
+                    nxmv[1] = "R"+nxmv[1]
+                elif player.piece == "rook":
+                   nxmv[1] = "Q"+nxmv[1]
+                moves.append(nxmv)
+                printMoves()
                 hints = 0
                 for t in movetrtls:
                     t.ht()
@@ -275,9 +317,22 @@ def click(x, y):
                         ded = 1
                         break
                     print("Moved enemy", o)
+                    if len(moves) == 16:
+                        moves.pop(0)
+                    nxmv = [en,xgrd[grid.index(en.xcor())]+ygrd[grid.index(en.ycor())]]
+                    if en.piece == "knight":
+                        nxmv[1] = "N"+nxmv[1]
+                    elif en.piece == "bishop":
+                        nxmv[1] = "B"+nxmv[1]
+                    elif en.piece == "rook":
+                        nxmv[1] = "R"+nxmv[1]
+                    elif en.piece == "rook":
+                        nxmv[1] = "Q"+nxmv[1]
+                    moves.append(nxmv)
+                    printMoves()
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
-                    for i in range(round(kills/3)+1-len(enemy)):
+                    for i in range(round(kills/3)+2-len(enemy)):
                         time.sleep(0.25)
                         print("Spawning enemy",i+1)
                         enemySpawn()
@@ -287,19 +342,21 @@ def click(x, y):
 
 
 def resetGame():
-    global player, enemy, screen, kills, spawn, playerpiece
+    global player, enemy, screen, kills, spawn, moves, moveui
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     print("there are",len(enemy), "enemies")
     lemy = len(enemy)
-    for i in range(lemy):
-        print("lemy ==",lemy)
-        enemy[i-1].clear()
-        enemy[i-1].ht()
-        enemy.pop(i-1)
+    for i in range(lemy-1,-1,-1):
+        print(i)
+        enemy[i].clear()
+        enemy[i].ht()
+        enemy.pop(i)
         print("Removed enemy",i+1)
     kills = 0
     spawn = 0
-    playerpiece = "pawn"
+    moves = []
+    moveui.clear()
+    player.piece = "pawn"
     player.st()
     enemySpawn()
     screen.update()
