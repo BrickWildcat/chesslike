@@ -82,10 +82,11 @@ playerpiece = "pawn"
 print("Spawned player")
 enemy = []
 
-
 def enemySpawn():
     global player, enemy
     newguy =turtle.Turtle()
+    newguy.color(r.choice(["red","orange red","orange","gold","yellow","lime","green","cyan","light blue","blue","medium slate blue","dark violet","magenta","deep pink"]))
+    newguy.pensize(10)
     seed = r.randint(0,14)
     if seed < 7:
         newguy.piece = "pawn"
@@ -112,6 +113,7 @@ def enemyKill():
     global player, kills
     for e in enemy:
         if e.distance(player) == 0:
+            e.clear()
             e.ht()
             enemy.remove(e)
             kills += 1
@@ -213,7 +215,10 @@ def enemyMove(emy,piece="pawn"):
                 y = emy.ycor()
                 validmove = 1
     time.sleep(0.5)
+    emy.clear()
+    emy.pendown()
     emy.goto(x, y)
+    emy.penup()
     screen.update()
     if kill:
         player.ht()
@@ -288,6 +293,7 @@ def resetGame():
     lemy = len(enemy)
     for i in range(lemy):
         print("lemy ==",lemy)
+        enemy[i-1].clear()
         enemy[i-1].ht()
         enemy.pop(i-1)
         print("Removed enemy",i+1)
