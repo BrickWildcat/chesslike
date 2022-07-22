@@ -345,7 +345,7 @@ def click(x, y):
                     printMoves()
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
-                    for i in range(round(kills/3)+2-len(enemy)):
+                    for i in range(round(kills/5)+2-len(enemy)):
                         time.sleep(0.25)
                         print("Spawning enemy",i+1)
                         enemySpawn()
@@ -409,7 +409,7 @@ def click(x, y):
                     printMoves()
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
-                    for i in range(round(kills/3)+2-len(enemy)):
+                    for i in range(round(kills/3)+1-len(enemy)):
                         time.sleep(0.25)
                         print("Spawning enemy",i+1)
                         enemySpawn()
