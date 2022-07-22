@@ -267,16 +267,16 @@ def enemyMove(emy,piece):
         else:
             # print("Invalid move, checking for bad moves")
             for move in piecearr:
-                conf = 0
+                conf = isBlocked()
                 x = emy.xcor() + move[0]
                 y = emy.ycor() + move[1]
                 for e in enemy:
-                    if e.distance(x,y) == 0 or x > 280 or y > 280 or x < -280 or y < -280 or isBlocked(emy,move):
+                    if e.distance(x,y) == 0 or x > 280 or y > 280 or x < -280 or y < -280:
                         conf = 1
                 if conf:
                     # print("Removing bad move")
                     badmoves.append(move)
-            if len(badmoves) == len(piecearr):
+            if len(badmoves) >= len(piecearr):
                 # print("No good moves, staying in place")
                 x = emy.xcor()
                 y = emy.ycor()
@@ -434,7 +434,7 @@ def click(x, y):
                     printMoves()
                 if spawn == 5 or len(enemy) == 0 and not ded:
                     spawn = 0
-                    for i in range(round(kills/5)+1-len(enemy)):
+                    for i in range(round(kills/4)+1-len(enemy)):
                         # print("Spawning enemy",i+1)
                         enemySpawn()
                         time.sleep(0.5)
