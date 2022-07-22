@@ -478,13 +478,13 @@ def resetGame():
         uiUpdate()
     else:
         moves = []
+        moveui.clear()
         kills = 0
         player.piece = "pawn"
         player.shape("game/WhitePawn.gif")
         enemySpawn()
         title.st()
     player.st()
-    moveui.clear()
     screen.update()
 screen.listen()
 screen.onclick(click)
