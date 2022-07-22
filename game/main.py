@@ -1,10 +1,14 @@
 import turtle
 import random as r
 import time
+import os
+import atexit
+
 hp = 1
 hints = 0
 movetrtls = []
 moves = []
+heart = 0
 spawn = 0
 kills = 0
 screen=turtle.Screen()
@@ -22,6 +26,7 @@ screen.addshape("game/BlackBishop.gif")
 screen.addshape("game/BlackRook.gif")
 screen.addshape("game/BlackQueen.gif")
 screen.addshape("game/Marker2.gif")
+screen.addshape("game/HeartB.gif")
 grid = [-280, -200, -120, -40, 40, 120, 200, 280]
 ygrd = ["8","7","6","5","4","3","2","1"]
 xgrd = ["a","b","c","d","e","f","g","h"]
@@ -42,22 +47,27 @@ pawnselect = turtle.Turtle()
 pawnselect.penup()
 pawnselect.shape("game/WhitePawn.gif")
 pawnselect.goto(400,180)
+pawnselect.piece = "pawn"
 knightselect = turtle.Turtle()
 knightselect.penup()
 knightselect.shape("game/WhiteKnight.gif")
 knightselect.goto(400,100)
+knightselect.piece = "knight"
 bishopselect = turtle.Turtle()
 bishopselect.penup()
 bishopselect.shape("game/WhiteBishop.gif")
 bishopselect.goto(400,20)
+bishopselect.piece = "bishop"
 rookselect = turtle.Turtle()
 rookselect.penup()
 rookselect.shape("game/WhiteRook.gif")
 rookselect.goto(400,-60)
+rookselect.piece = "rook"
 queenselect = turtle.Turtle()
 queenselect.penup()
 queenselect.shape("game/WhiteQueen.gif")
 queenselect.goto(400,-140)
+queenselect.piece = "queen"
 
 def uiUpdate():
     ui.clear()
@@ -102,19 +112,22 @@ def enemySpawn():
     global player, enemy
     newguy =turtle.Turtle()
     newguy.color(r.choice(["red","orange red","orange","gold","yellow","lime","green","cyan","light blue","blue","medium slate blue","dark violet","magenta","deep pink"]))
-    seed = r.randint(0,14)
-    if seed < 7:
+    seed = r.randint(0,19)
+    if seed < 8:
         newguy.piece = "pawn"
         newguy.shape("game/BlackPawn.gif")
-    elif seed < 10:
+    elif seed < 12:
         newguy.piece = "knight"
         newguy.shape("game/BlackKnight.gif")
-    elif seed < 13:
+    elif seed < 15:
         newguy.piece = "bishop"
         newguy.shape("game/BlackBishop.gif")
-    else:
+    elif seed < 19:
         newguy.piece = "rook"
         newguy.shape("game/BlackRook.gif")
+    else:
+        newguy.piece = "queen"
+        newguy.shape("game/BlackQueen.gif")
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
@@ -132,6 +145,8 @@ def enemyKill():
             e.ht()
             enemy.remove(e)
             kills += 1
+            return True
+    return False
 
 print("Spawning enemy 1")
 enemySpawn()
@@ -170,14 +185,26 @@ def pieceArr(piece):
     elif piece == "queen":
         return queen
 
+def heartSpawn():
+    global heart, player, enemy
+    newguy = turtle.Turtle()
+    newguy.shape("game/HeartB.gif")
+    newguy.penup()
+    newguy.goto(player.xcor(),player.ycor())
+    while player.distance(newguy) == 0:
+        newguy.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
+    for e in enemy:
+            while e.distance(newguy) == 0:
+               newguy.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
+    heart = newguy
 
 
-
-
-def enemyMove(emy,piece="pawn"):
-    global screen, player, moves
+def enemyMove(emy,piece):
+    global screen, player, moves, heart
     kill = 0
     badmoves = []
+    if heart != 0:
+        badmoves.append([heart.xcor()-emy.xcor(),heart.ycor()-emy.ycor()])
     validmove = 0
     piecearr = pieceArr(piece)
     while not validmove:
@@ -241,13 +268,14 @@ def enemyMove(emy,piece="pawn"):
         if len(moves) == 16:
             moves.pop(0)
         nxmv = [emy,xgrd[grid.index(emy.xcor())]+ygrd[grid.index(emy.ycor())]]
+        nxmv[1] = "x"+nxmv[1]
         if emy.piece == "knight":
             nxmv[1] = "N"+nxmv[1]
         elif emy.piece == "bishop":
             nxmv[1] = "B"+nxmv[1]
         elif emy.piece == "rook":
             nxmv[1] = "R"+nxmv[1]
-        elif emy.piece == "rook":
+        elif emy.piece == "queen":
             nxmv[1] = "Q"+nxmv[1]
         moves.append(nxmv)
         printMoves()
@@ -257,11 +285,11 @@ def enemyMove(emy,piece="pawn"):
         resetGame()
         return True
 
-
+        
 
 
 def click(x, y):
-    global player, hints, spawn, kills, screen
+    global player, hints, spawn, kills, screen, heart, hp
     if player.distance(x,y) < 40:
         if not hints:
             hints = 1
@@ -285,29 +313,13 @@ def click(x, y):
             for t in movetrtls:
                 t.ht()
     else:
-        for t in movetrtls:
-            if t.distance(x,y) < 40 and t.isvisible():
-                print("Moving player")
-                player.goto(t.xcor(),t.ycor())
-                enemyKill()
-                if len(moves) == 16:
-                    moves.pop(0)
-                nxmv = [player,xgrd[grid.index(player.xcor())]+ygrd[grid.index(player.ycor())]]
-                if player.piece == "knight":
-                  nxmv[1] = "N"+nxmv[1]
-                elif player.piece == "bishop":
-                    nxmv[1] = "B"+nxmv[1]
-                elif player.piece == "rook":
-                    nxmv[1] = "R"+nxmv[1]
-                elif player.piece == "rook":
-                   nxmv[1] = "Q"+nxmv[1]
-                moves.append(nxmv)
-                printMoves()
+        for t in [pawnselect,knightselect,bishopselect,rookselect,queenselect]:
+            if t.distance(x,y) < 40 and t.isvisible() and player.piece != t.piece:
                 hints = 0
-                for t in movetrtls:
-                    t.ht()
-                screen.update()
-                print("Moved player")
+                for mt in movetrtls:
+                    mt.ht()
+                player.piece = t.piece
+                player.shape(t.shape())
                 o=0
                 ded = 0
                 for en in enemy:
@@ -326,7 +338,7 @@ def click(x, y):
                         nxmv[1] = "B"+nxmv[1]
                     elif en.piece == "rook":
                         nxmv[1] = "R"+nxmv[1]
-                    elif en.piece == "rook":
+                    elif en.piece == "queen":
                         nxmv[1] = "Q"+nxmv[1]
                     moves.append(nxmv)
                     printMoves()
@@ -337,12 +349,78 @@ def click(x, y):
                         print("Spawning enemy",i+1)
                         enemySpawn()
                         screen.update()
+                    if heart == 0:
+                        heartSpawn()
+                elif not ded:
+                    spawn += 1
+        for t in movetrtls:
+            if t.distance(x,y) < 40 and t.isvisible():
+                print("Moving player")
+                player.goto(t.xcor(),t.ycor())
+                nxmv = [player,xgrd[grid.index(player.xcor())]+ygrd[grid.index(player.ycor())]]
+                if enemyKill():
+                    nxmv[1] = "x"+nxmv[1]
+                if len(moves) == 16:
+                    moves.pop(0)
+                if player.piece == "knight":
+                  nxmv[1] = "N"+nxmv[1]
+                elif player.piece == "bishop":
+                    nxmv[1] = "B"+nxmv[1]
+                elif player.piece == "rook":
+                    nxmv[1] = "R"+nxmv[1]
+                elif player.piece == "queen":
+                   nxmv[1] = "Q"+nxmv[1]
+                moves.append(nxmv)
+                printMoves()
+                hints = 0
+                for t in movetrtls:
+                    t.ht()
+                screen.update()
+                print("Moved player")
+                if heart != 0:
+                    if player.distance(heart) == 0:
+                        hp += 1
+                        uiUpdate()
+                        heart.ht()
+                        screen.update()
+                        heart = 0
+                o=0
+                ded = 0
+                for en in enemy:
+                    o+=1
+                    print("Moving enemy",o)
+                    if enemyMove(en,en.piece):
+                        ded = 1
+                        break
+                    print("Moved enemy", o)
+                    if len(moves) == 16:
+                        moves.pop(0)
+                    nxmv = [en,xgrd[grid.index(en.xcor())]+ygrd[grid.index(en.ycor())]]
+                    if en.piece == "knight":
+                        nxmv[1] = "N"+nxmv[1]
+                    elif en.piece == "bishop":
+                        nxmv[1] = "B"+nxmv[1]
+                    elif en.piece == "rook":
+                        nxmv[1] = "R"+nxmv[1]
+                    elif en.piece == "queen":
+                        nxmv[1] = "Q"+nxmv[1]
+                    moves.append(nxmv)
+                    printMoves()
+                if spawn == 5 or len(enemy) == 0 and not ded:
+                    spawn = 0
+                    for i in range(round(kills/3)+2-len(enemy)):
+                        time.sleep(0.25)
+                        print("Spawning enemy",i+1)
+                        enemySpawn()
+                        screen.update()
+                    if heart == 0:
+                        heartSpawn()
                 elif not ded:
                     spawn += 1
 
 
 def resetGame():
-    global player, enemy, screen, kills, spawn, moves, moveui
+    global player, enemy, screen, kills, spawn, moves, moveui, heart, hp
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
     print("there are",len(enemy), "enemies")
     lemy = len(enemy)
@@ -352,16 +430,43 @@ def resetGame():
         enemy[i].ht()
         enemy.pop(i)
         print("Removed enemy",i+1)
-    kills = 0
+    
     spawn = 0
     moves = []
-    moveui.clear()
-    player.piece = "pawn"
+    if heart != 0:
+        heart.ht()
+        heart = 0
+    if hp>1:
+        hp -= 1
+        if hp < 3 and (player.piece == "bishop" or player.piece == "knight"):
+            player.piece = "pawn"
+            player.shape("game/WhitePawn.gif")
+        elif hp < 5 and (player.piece == "rook"):
+            player.piece = "bishop"
+            player.shape("game/WhiteBishop.gif")
+        elif hp < 9 and (player.piece == "queen"):
+            player.piece = "rook"
+            player.shape("game/WhiteQueen.gif")
+        uiUpdate()
+    else:
+        kills = 0
+        player.piece = "pawn"
+        player.shape("game/WhitePawn.gif")
     player.st()
     enemySpawn()
+    moveui.clear()
     screen.update()
 screen.listen()
 screen.onclick(click)
 
+def exit_handler():
+    os.system("pkill aplay")
+
+atexit.register(exit_handler)
+starttime = time.time_ns() - (38*(10**9))
 while True:
     screen.update()
+    if time.time_ns()-starttime >= 38*(10**9):
+        os.system("aplay game/Song.wav &")
+        starttime = time.time_ns()
+    
