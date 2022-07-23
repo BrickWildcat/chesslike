@@ -22,7 +22,7 @@ The rook is unlocked for the player at 5 HP.
 
 **Queen** *(Very rare enemy)*:
 The queen combines the movement of the bishop and rook, allowing it to move any amount of spaces in any direction, as long as its path isn't blocked. The queen is the most powerful piece in the game, and will not spawn until the player has made considerable progress.
-The bishop is unlocked for the player at 9 HP.
+The queen is unlocked for the player at 9 HP.
 
 # Running
 ChessLike was exclusively developed for and on Linux, and uses a Linux-specific command to play audio. This may cause crashes on other OSes.
