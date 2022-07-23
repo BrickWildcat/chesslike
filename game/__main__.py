@@ -267,7 +267,7 @@ def enemyMove(emy,piece):
         else:
             # print("Invalid move, checking for bad moves")
             for move in piecearr:
-                conf = isBlocked()
+                conf = isBlocked(emy,move)
                 x = emy.xcor() + move[0]
                 y = emy.ycor() + move[1]
                 for e in enemy:
@@ -473,7 +473,7 @@ def resetGame():
             player.shape("game/WhiteBishop.gif")
         elif hp < 9 and (player.piece == "queen"):
             player.piece = "rook"
-            player.shape("game/WhiteQueen.gif")
+            player.shape("game/WhiteRook.gif")
         enemySpawn()
         uiUpdate()
     else:
