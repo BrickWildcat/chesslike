@@ -112,20 +112,20 @@ player.piece = "pawn"
 enemy = []
 
 def enemySpawn():
-    global player, enemy
+    global player, enemy, kills
     newguy =turtle.Turtle()
     newguy.color(r.choice(["red","orange red","orange","gold","yellow","lime","green","cyan","light blue","blue","medium slate blue","dark violet","magenta","deep pink"]))
-    seed = r.randint(0,19)
-    if seed < 8:
+    seed = r.randint(0,99)
+    if seed + kills + hp< 45:
         newguy.piece = "pawn"
         newguy.shape("game/BlackPawn.gif")
-    elif seed < 12:
+    elif seed + kills + hp < 70:
         newguy.piece = "knight"
         newguy.shape("game/BlackKnight.gif")
-    elif seed < 15:
+    elif seed + kills + hp < 90:
         newguy.piece = "bishop"
         newguy.shape("game/BlackBishop.gif")
-    elif seed < 19:
+    elif seed + kills < 115:
         newguy.piece = "rook"
         newguy.shape("game/BlackRook.gif")
     else:
