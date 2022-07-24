@@ -17,20 +17,20 @@ kills = 0
 screen=turtle.Screen()
 screen.title("ChessLike")
 screen.bgcolor("grey")
-screen.bgpic("chessdungeon.gif")
-screen.addshape("WhitePawn.gif")
-screen.addshape("WhiteKnight.gif")
-screen.addshape("WhiteBishop.gif")
-screen.addshape("WhiteRook.gif")
-screen.addshape("WhiteQueen.gif")
-screen.addshape("BlackPawn.gif")
-screen.addshape("BlackKnight.gif")
-screen.addshape("BlackBishop.gif")
-screen.addshape("BlackRook.gif")
-screen.addshape("BlackQueen.gif")
-screen.addshape("Marker2.gif")
-screen.addshape("HeartB.gif")
-screen.addshape("Title.gif")
+screen.bgpic("game/chessdungeon.gif")
+screen.addshape("game/WhitePawn.gif")
+screen.addshape("game/WhiteKnight.gif")
+screen.addshape("game/WhiteBishop.gif")
+screen.addshape("game/WhiteRook.gif")
+screen.addshape("game/WhiteQueen.gif")
+screen.addshape("game/BlackPawn.gif")
+screen.addshape("game/BlackKnight.gif")
+screen.addshape("game/BlackBishop.gif")
+screen.addshape("game/BlackRook.gif")
+screen.addshape("game/BlackQueen.gif")
+screen.addshape("game/Marker2.gif")
+screen.addshape("game/HeartB.gif")
+screen.addshape("game/Title.gif")
 grid = [-280, -200, -120, -40, 40, 120, 200, 280]
 ygrd = ["8","7","6","5","4","3","2","1"]
 xgrd = ["a","b","c","d","e","f","g","h"]
@@ -49,27 +49,27 @@ moveui.penup()
 moveui.ht()
 pawnselect = turtle.Turtle()
 pawnselect.penup()
-pawnselect.shape("WhitePawn.gif")
+pawnselect.shape("game/WhitePawn.gif")
 pawnselect.goto(400,180)
 pawnselect.piece = "pawn"
 knightselect = turtle.Turtle()
 knightselect.penup()
-knightselect.shape("WhiteKnight.gif")
+knightselect.shape("game/WhiteKnight.gif")
 knightselect.goto(400,100)
 knightselect.piece = "knight"
 bishopselect = turtle.Turtle()
 bishopselect.penup()
-bishopselect.shape("WhiteBishop.gif")
+bishopselect.shape("game/WhiteBishop.gif")
 bishopselect.goto(400,20)
 bishopselect.piece = "bishop"
 rookselect = turtle.Turtle()
 rookselect.penup()
-rookselect.shape("WhiteRook.gif")
+rookselect.shape("game/WhiteRook.gif")
 rookselect.goto(400,-60)
 rookselect.piece = "rook"
 queenselect = turtle.Turtle()
 queenselect.penup()
-queenselect.shape("WhiteQueen.gif")
+queenselect.shape("game/WhiteQueen.gif")
 queenselect.goto(400,-140)
 queenselect.piece = "queen"
 
@@ -103,7 +103,7 @@ uiUpdate()
 
 # print("Spawning player")
 player=turtle.Turtle()
-player.shape("WhitePawn.gif")
+player.shape("game/WhitePawn.gif")
 player.color("white")
 player.penup()
 player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
@@ -118,19 +118,19 @@ def enemySpawn():
     seed = r.randint(0,99)
     if seed + kills + hp< 45:
         newguy.piece = "pawn"
-        newguy.shape("BlackPawn.gif")
+        newguy.shape("game/BlackPawn.gif")
     elif seed + kills + hp < 70:
         newguy.piece = "knight"
-        newguy.shape("BlackKnight.gif")
+        newguy.shape("game/BlackKnight.gif")
     elif seed + kills + hp < 90:
         newguy.piece = "bishop"
-        newguy.shape("BlackBishop.gif")
+        newguy.shape("game/BlackBishop.gif")
     elif seed + kills < 115:
         newguy.piece = "rook"
-        newguy.shape("BlackRook.gif")
+        newguy.shape("game/BlackRook.gif")
     else:
         newguy.piece = "queen"
-        newguy.shape("BlackQueen.gif")
+        newguy.shape("game/BlackQueen.gif")
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
@@ -172,7 +172,7 @@ for i in range(len(queen)):
     movetrtls.append(turtle.Turtle())
 for t in movetrtls:
     t.penup()
-    t.shape("Marker2.gif")
+    t.shape("game/Marker2.gif")
     t.ht()
 
 def pieceArr(piece):
@@ -191,7 +191,7 @@ def pieceArr(piece):
 def heartSpawn():
     global heart, player, enemy
     newguy = turtle.Turtle()
-    newguy.shape("HeartB.gif")
+    newguy.shape("game/HeartB.gif")
     newguy.penup()
     newguy.goto(player.xcor(),player.ycor())
     while player.distance(newguy) == 0:
@@ -467,13 +467,13 @@ def resetGame():
         kills = hp
         if hp < 3 and (player.piece == "bishop" or player.piece == "knight"):
             player.piece = "pawn"
-            player.shape("WhitePawn.gif")
+            player.shape("game/WhitePawn.gif")
         elif hp < 5 and (player.piece == "rook"):
             player.piece = "bishop"
-            player.shape("WhiteBishop.gif")
+            player.shape("game/WhiteBishop.gif")
         elif hp < 9 and (player.piece == "queen"):
             player.piece = "rook"
-            player.shape("WhiteRook.gif")
+            player.shape("game/WhiteRook.gif")
         enemySpawn()
         uiUpdate()
     else:
@@ -481,7 +481,7 @@ def resetGame():
         moveui.clear()
         kills = 0
         player.piece = "pawn"
-        player.shape("WhitePawn.gif")
+        player.shape("game/WhitePawn.gif")
         enemySpawn()
         title.st()
     player.st()
@@ -493,7 +493,7 @@ def exit_handler():
     os.system("pkill aplay")
 
 title = turtle.Turtle()
-title.shape("Title.gif")
+title.shape("game/Title.gif")
 title.goto(0,0)
 
 atexit.register(exit_handler)
@@ -501,5 +501,5 @@ starttime = time.time_ns() - (38.4*(10**9))
 while True:
     screen.update()
     if time.time_ns()-starttime >= 38.4*(10**9):
-        os.system("aplay Song.wav &")
+        os.system("aplay game/Song.wav &")
         starttime = time.time_ns()
