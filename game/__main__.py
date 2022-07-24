@@ -98,7 +98,6 @@ def printMoves():
         moveui.write(m[1], align="center", font=("Pixeloid Sans", 25))
         moveui.goto(-410,moveui.ycor()-40)
     screen.update()
-        
 
 uiUpdate()
 
@@ -311,7 +310,7 @@ def enemyMove(emy,piece):
         resetGame()
         return True
 
-        
+
 
 
 def click(x, y):
@@ -504,4 +503,3 @@ while True:
     if time.time_ns()-starttime >= 38*(10**9):
         os.system("aplay game/Song.wav &")
         starttime = time.time_ns()
-    
