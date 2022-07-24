@@ -27,4 +27,6 @@ The queen is unlocked for the player at 9 HP.
 # Running
 ChessLike was exclusively developed for and on Linux, and uses a Linux-specific command to play audio. This may cause crashes on other OSes.
 
-As of 7/23/22, I (BrickWildcat) haven't been able to run `game/__main__.py` outside of an IDE (such as Visual Studio Code) successfully. Using the default run configuration in VSC's Python extention is reccommended.
+In the terminal: `cd path_to/chesslike`
+
+`./game/__main__.py
