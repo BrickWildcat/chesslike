@@ -1,3 +1,4 @@
+#!/bin/python
 import turtle
 import random as r
 import time
