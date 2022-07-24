@@ -500,6 +500,6 @@ atexit.register(exit_handler)
 starttime = time.time_ns() - (38*(10**9))
 while True:
     screen.update()
-    if time.time_ns()-starttime >= 38*(10**9):
+    if time.time_ns()-starttime >= 38.4*(10**9):
         os.system("aplay game/Song.wav &")
         starttime = time.time_ns()
