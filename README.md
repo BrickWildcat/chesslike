@@ -1,4 +1,4 @@
-# ChessLike: a rougelike on a chess board
+# ChessLike: a roguelike on a chess board
 *Started for MTU SYP 2022*
 
 Play as a white pawn capturing hordes of enemies, doing your best to survive. Click on your piece to move. Collect hearts to increase your HP and upgrade your piece.
@@ -27,6 +27,8 @@ The queen is unlocked for the player at 9 HP.
 # Running
 ChessLike was exclusively developed for and on Linux, and uses a Linux-specific command to play audio. This may cause crashes on other OSes.
 
-In the terminal: `cd path_to/chesslike`
+To run, it's as simple as opening your terminal and running:
 
-`./game/__main__.py`
+`$ game/__main__.py`
+
+Note: As of 7/24/22, Running `game/__main__.py` outside of an IDE works properly, though sounds seems buggy. Using the default run configuration in VSC's Python extention is still recommended.
