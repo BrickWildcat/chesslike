@@ -497,7 +497,7 @@ title.shape("Title.gif")
 title.goto(0,0)
 
 atexit.register(exit_handler)
-starttime = time.time_ns() - (38*(10**9))
+starttime = time.time_ns() - (38.4*(10**9))
 while True:
     screen.update()
     if time.time_ns()-starttime >= 38.4*(10**9):
