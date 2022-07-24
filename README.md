@@ -29,4 +29,4 @@ ChessLike was exclusively developed for and on Linux, and uses a Linux-specific 
 
 In the terminal: `cd path_to/chesslike`
 
-`./game/__main__.py
+`./game/__main__.py`
