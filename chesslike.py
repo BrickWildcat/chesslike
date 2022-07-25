@@ -1,10 +1,11 @@
 #!/bin/python
 import turtle
+import tkinter as tk
 import random as r
 import time
 import os
-import atexit
-import math
+os.system("pip install playsound")
+from playsound import playsound
 
 
 hp = 1
@@ -15,6 +16,8 @@ heart = 0
 spawn = 0
 kills = 0
 screen=turtle.Screen()
+icon = tk.Image("photo",file="game/pawn.png")
+screen._root.iconphoto(True, icon)
 screen.title("ChessLike")
 screen.bgcolor("grey")
 screen.bgpic("game/chessdungeon.gif")
@@ -489,17 +492,13 @@ def resetGame():
 screen.listen()
 screen.onclick(click)
 
-def exit_handler():
-    os.system("pkill aplay")
-
 title = turtle.Turtle()
 title.shape("game/Title.gif")
 title.goto(0,0)
 
-atexit.register(exit_handler)
 starttime = time.time_ns() - (38.4*(10**9))
 while True:
     screen.update()
     if time.time_ns()-starttime >= 38.4*(10**9):
-        os.system("aplay game/Song.wav &")
+        playsound("game/Song.wav", 0)
         starttime = time.time_ns()
