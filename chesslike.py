@@ -3,11 +3,14 @@ import turtle
 import tkinter as tk
 import random as r
 import time
+import pickle
 import os
 os.system("pip install playsound")
 from playsound import playsound
 
-
+pckl = open('game/hiscore.pkl', 'rb')
+hiscore = pickle.load(pckl)
+score = 0
 hp = 1
 hints = 0
 movetrtls = []
@@ -77,8 +80,17 @@ queenselect.goto(400,-140)
 queenselect.piece = "queen"
 
 def uiUpdate():
+    global hp, score, ui, pawnselect, knightselect, bishopselect, rookselect, queenselect, hiscore
+    if score > hiscore:
+        hiscore = score
+        pckl = open('game/hiscore.pkl','wb')
+        pickle.dump(hiscore, pckl)
     ui.clear()
     ui.write("{} HP".format(hp), align="center", font=("Pixeloid Sans", 30))
+    ui.pu()
+    ui.goto(400,-250)
+    ui.pd
+    ui.write("Score: {}\nHiScore: {}".format(score, hiscore), align="center", font=("Pixeloid Sans", 17))
     pawnselect.st()
     knightselect.ht()
     bishopselect.ht()
@@ -91,6 +103,7 @@ def uiUpdate():
         rookselect.st()
     if hp >= 9:
         queenselect.st()
+    ui.goto(410,250)
 
 def printMoves():
     global moves, screen
@@ -115,20 +128,20 @@ player.piece = "pawn"
 enemy = []
 
 def enemySpawn():
-    global player, enemy, kills
+    global player, enemy, score
     newguy =turtle.Turtle()
     newguy.color(r.choice(["red","orange red","orange","gold","yellow","lime","green","cyan","light blue","blue","medium slate blue","dark violet","magenta","deep pink"]))
-    seed = r.randint(0,115)
-    if seed + kills + hp< 45:
+    seed = r.randint(0,999)
+    if seed + score < 500:
         newguy.piece = "pawn"
         newguy.shape("game/BlackPawn.gif")
-    elif seed + kills + hp < 70:
+    elif seed + score < 800:
         newguy.piece = "knight"
         newguy.shape("game/BlackKnight.gif")
-    elif seed + kills + hp < 95:
+    elif seed + score < 1100:
         newguy.piece = "bishop"
         newguy.shape("game/BlackBishop.gif")
-    elif seed + kills + hp < 120:
+    elif seed + score < 1450:
         newguy.piece = "rook"
         newguy.shape("game/BlackRook.gif")
     else:
@@ -144,9 +157,18 @@ def enemySpawn():
     enemy.append(newguy)
 
 def enemyKill():
-    global player, kills
+    global player, kills, score, hiscore
     for e in enemy:
         if e.distance(player) == 0:
+            if e.piece == "pawn":
+                score += 10
+            elif e.piece == "knight" or e.piece == "bishop":
+                score += 30
+            elif e.piece == "rook":
+                score += 50
+            else:
+                score += 90
+            uiUpdate()
             e.clear()
             e.ht()
             enemy.remove(e)
@@ -319,7 +341,7 @@ def enemyMove(emy,piece):
 
 
 def click(x, y):
-    global player, hints, spawn, kills, screen, heart, hp
+    global player, hints, spawn, kills, screen, heart, hp, score
     if title.isvisible():
         title.ht()
     if player.distance(x,y) < 40:
@@ -411,6 +433,7 @@ def click(x, y):
                 if heart != 0:
                     if player.distance(heart) == 0:
                         hp += 1
+                        score += 5*(hp-1)
                         uiUpdate()
                         heart.ht()
                         screen.update()
@@ -451,7 +474,7 @@ def click(x, y):
 
 
 def resetGame():
-    global player, enemy, screen, kills, spawn, moves, moveui, heart, hp, movetrtls
+    global player, enemy, screen, kills, spawn, moves, moveui, heart, hp, movetrtls, score
     for t in movetrtls:
         t.ht()
     player.goto(r.randint(-2,5)*80-120, r.randint(-2,5)*80-120)
@@ -469,6 +492,7 @@ def resetGame():
         heart = 0
     if hp>1:
         hp -= 1
+        score -= 100
         kills = hp
         if hp < 3 and (player.piece == "bishop" or player.piece == "knight"):
             player.piece = "pawn"
@@ -485,9 +509,11 @@ def resetGame():
         moves = []
         moveui.clear()
         kills = 0
+        score = 0
         player.piece = "pawn"
         player.shape("game/WhitePawn.gif")
         enemySpawn()
+        uiUpdate()
         title.st()
     player.st()
     screen.update()
