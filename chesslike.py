@@ -128,7 +128,7 @@ def enemySpawn():
     elif seed + kills + hp < 90:
         newguy.piece = "bishop"
         newguy.shape("game/BlackBishop.gif")
-    elif seed + kills < 115:
+    elif seed + kills + hp < 115:
         newguy.piece = "rook"
         newguy.shape("game/BlackRook.gif")
     else:
