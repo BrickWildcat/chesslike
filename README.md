@@ -25,6 +25,6 @@ The queen combines the movement of the bishop and rook, allowing it to move any 
 The queen is unlocked for the player at 9 HP.
 
 # Running
-ChessLike was exclusively developed for and on Linux, and uses a Linux-specific command to play audio. This may cause crashes on other OSes.
+ChessLike was developed for and on Linux, but should work on other OSes. (fingers crossed)
 
 To run, either double click on `chesslike.py` or run it in the terminal (`./chesslike.py`).
