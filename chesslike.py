@@ -88,9 +88,9 @@ def uiUpdate():
     ui.clear()
     ui.write("{} HP".format(hp), align="center", font=("Pixeloid Sans", 30))
     ui.pu()
-    ui.goto(400,-250)
+    ui.goto(405,-325)
     ui.pd
-    ui.write("Score: {}\nHiScore: {}".format(score, hiscore), align="center", font=("Pixeloid Sans", 17))
+    ui.write("Score: {}\nHiScore: {}".format(score, hiscore), align="center", font=("Pixeloid Sans", 16))
     pawnselect.st()
     knightselect.ht()
     bishopselect.ht()
