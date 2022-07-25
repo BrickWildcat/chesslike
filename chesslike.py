@@ -259,11 +259,13 @@ def enemyMove(emy,piece):
                 # print("Conflict found")
         # print("Checking to see if I can kill player")
         for xy in piecearr: 
-            if player.xcor() == emy.xcor()+xy[0] and player.ycor() == emy.ycor()+xy[1] and not(isBlocked(emy,xy)):
+            tx = emy.xcor() + xy[0]
+            ty = emy.ycor() + xy[1]
+            if player.distance(tx,ty) == 0 and not(isBlocked(emy,xy)):
                 # print("Kill move found")
                 kill = 1
-                x = emy.xcor() + xy[0]
-                y = emy.ycor() + xy[1]
+                x = player.xcor()
+                y = player.ycor()
         if not(x > 280 or y > 280 or x < -280 or y < -280 or conflict):
             # print("Valid move found")
             validmove = 1
@@ -279,7 +281,7 @@ def enemyMove(emy,piece):
                 if conf:
                     # print("Removing bad move")
                     badmoves.append(move)
-            if len(badmoves) >= len(piecearr):
+            if len(badmoves) == len(piecearr)+1:
                 # print("No good moves, staying in place")
                 x = emy.xcor()
                 y = emy.ycor()
