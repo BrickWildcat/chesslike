@@ -5,7 +5,7 @@ import random as r
 import time
 import pickle
 import os
-os.system("pip install playsound")
+os.system("pip install --upgrade playsound")
 from playsound import playsound
 
 pckl = open('game/hiscore.pkl', 'rb')
@@ -315,6 +315,7 @@ def enemyMove(emy,piece):
     emy.goto(x, y)
     emy.penup()
     screen.update()
+    playsound("game/chessmove.wav")
     if kill:
         player.ht()
         if len(moves) == 16:
@@ -429,6 +430,7 @@ def click(x, y):
                 for t in movetrtls:
                     t.ht()
                 screen.update()
+                playsound("game/chessmove.wav")
                 # print("Moved player")
                 if heart != 0:
                     if player.distance(heart) == 0:
