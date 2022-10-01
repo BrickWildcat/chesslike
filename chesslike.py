@@ -315,7 +315,7 @@ def enemyMove(emy,piece):
     emy.goto(x, y)
     emy.penup()
     screen.update()
-    playsound("game/chessmove.wav")
+    # playsound("game/chessmove.wav")
     if kill:
         player.ht()
         if len(moves) == 16:
@@ -430,7 +430,7 @@ def click(x, y):
                 for t in movetrtls:
                     t.ht()
                 screen.update()
-                playsound("game/chessmove.wav")
+                # playsound("game/chessmove.wav")
                 # print("Moved player")
                 if heart != 0:
                     if player.distance(heart) == 0:
