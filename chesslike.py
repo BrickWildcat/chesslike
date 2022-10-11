@@ -494,7 +494,7 @@ def resetGame():
         heart = 0
     if hp>1:
         hp -= 1
-        score -= 10*(2**hp)
+        score -= round(10*(1.3**hp))
         kills = hp
         if hp < 3 and (player.piece == "bishop" or player.piece == "knight"):
             player.piece = "pawn"
